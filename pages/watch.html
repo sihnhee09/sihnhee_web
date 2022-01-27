@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://kit.fontawesome.com/cc2256a363.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+    <title>Sihnhee web</title>
+</head>
+<body>
+    <nav class="sidebar close">
+        <header>
+            <div class="image-text">
+                <span class="image">
+                </span>
+                <div class="text logo-text">
+                    <span class="name">Sihnhee</span>
+                    <span class="profession">developer</span>
+                </div>
+            </div>
+            <i class='bx bx-chevron-right toggle'></i>
+        </header>
+        <div class="menu-bar">
+            <div class="menu">
+                <li class="search-box">
+                    <i class='bx bx-search icon'></i>
+                    <input type="text" placeholder="Search...">
+                </li>
+                <ul class="menu-links">
+                    <li class="nav-link">
+                        <a href="index.html">
+                            <i class='bx bx-home-alt icon' ></i>
+                            <span class="text nav-text">Home</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="introduce.html">
+                            <i class='bx bx-bar-chart-alt-2 icon' ></i>
+                            <span class="text nav-text">introduce</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="webhook.html">
+                            <i class='bx bx-bell icon'></i>
+                            <span class="text nav-text">Webhook</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a onclick="error0()">
+                            <i class='bx bx-pie-chart-alt icon' ></i>
+                            <span class="text nav-text">Watch</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a onclick="git()"> 
+                            <i class='bx bx-wallet icon' ></i>
+                            <span class="text nav-text">Github Lookup</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a onclick="like()">
+                            <i class='bx bx-heart icon' ></i>
+                            <span class="text nav-text">Likes</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="bottom-content">
+                <li class="">
+                    <a onclick="produtor()">
+                        <i class='bx bx-log-out icon' ></i>
+                        <span class="text nav-text">produtor</span>
+                    </a>
+                </li>
+                <li class="mode">
+                    <div class="sun-moon">
+                        <i class='bx bx-moon icon moon'></i>
+                        <i class='bx bx-sun icon sun'></i>
+                    </div>
+                    <span class="mode-text text">Dark mode</span>
+                    <div class="toggle-switch">
+                        <span class="switch"></span>
+                    </div>
+                </li>              
+            </div>
+        </div>
+    </nav>
+    <section class="home">
+        <div class="text">Sihnhee Web Site</div>
+        <div class="clock">
+            <div class="hour">
+                <div id="hr" class="hr"></div>
+            </div>
+            <div class="min">
+                <div id="mn" class="mn"></div>
+            </div>
+            <div class="sec">
+                <div id="sc" class="sc"></div>
+            </div>
+        </div>
+        <h1 class = "h1-clock"></h1>
+    </section>
+
+    <script>
+        const body = document.querySelector('body'),
+      sidebar = body.querySelector('nav'),
+      toggle = body.querySelector(".toggle"),
+      searchBtn = body.querySelector(".search-box"),
+      modeSwitch = body.querySelector(".toggle-switch"),
+      modeText = body.querySelector(".mode-text");
+toggle.addEventListener("click" , () =>{
+    sidebar.classList.toggle("close");
+})
+searchBtn.addEventListener("click" , () =>{
+    sidebar.classList.remove("close");
+})
+modeSwitch.addEventListener("click" , () =>{
+    body.classList.toggle("dark");
+    if(body.classList.contains("dark")){
+        modeText.innerText = "Light mode";
+    }else{
+        modeText.innerText = "Dark mode";    
+    }
+});
+    </script>
+    <script>
+        function like() {
+            Swal.fire({
+  title: '<strong> <u>의견</u></strong>',
+  icon: 'info',
+  html:
+    '웹사이트',
+  showCloseButton: true,
+  showCancelButton: true,
+  focusConfirm: false,
+  confirmButtonText:
+    '<i class="fa fa-thumbs-up"></i> Great!',
+  confirmButtonAriaLabel: 'Thumbs up, great!',
+  cancelButtonText:
+    '<i class="fa fa-thumbs-down"></i>',
+  cancelButtonAriaLabel: 'Thumbs down'
+})
+        }
+    </script>
+    <script>
+        function git() {
+            Swal.fire({
+  title: 'Submit your Github username',
+  input: 'text',
+  inputAttributes: {
+    autocapitalize: 'off'
+  },
+  showCancelButton: true,
+  confirmButtonText: 'Look up',
+  showLoaderOnConfirm: true,
+  preConfirm: (login) => {
+    return fetch(`https://api.github.com/users/${login}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(response.statusText)
+        }
+        return response.json()
+      })
+      .catch(error => {
+        Swal.showValidationMessage(
+          `Request failed: ${error}`
+        )
+        backdrop: true})
+  },
+  allowOutsideClick: () => !Swal.isLoading()
+}).then((result) => {
+  if (result.isConfirmed) {
+    Swal.fire({
+      title: `${result.value.login}'s avatar`,
+      imageUrl: result.value.avatar_url
+    })
+  }
+})
+        }
+    </script>
+    <script>
+        const deg = 6; 
+        const hr = document.querySelector('#hr'); 
+        const mn = document.querySelector('#mn'); 
+        const sc = document.querySelector('#sc'); 
+        setInterval (()=> { let day = new Date(); 
+            let hh = day.getHours() * 30; 
+            let mm = day.getMinutes() * deg; 
+            let ss = day.getSeconds() * deg; 
+            hr.style.transform = `rotateZ(${(hh)+(mm/12)}deg)`; 
+            mn.style.transform = `rotateZ(${mm}deg)`; 
+            sc.style.transform = `rotateZ(${ss}deg)`; })
+    </script>
+    <script>
+    function error0()
+    {
+        Swal.fire(
+            '같은창',
+            '현제창 : watch',
+            'error'
+        )
+        
+    }
+    </script>
+    <script>
+        function produtor(){
+            Swal.fire(
+                '제작자',
+                'Sihnhee',
+                'question'
+            )
+        }
+    </script>
+    <script>
+        const clock = document.querySelector('.h1-clock');
+
+
+        function getTime(){
+            const time = new Date();
+            const hour = time.getHours();
+            const minutes = time.getMinutes();
+            const seconds = time.getSeconds();
+            clock.innerHTML = `${hour<10 ? `0${hour}`:hour}:${minutes<10 ? `0${minutes}`:minutes}:${seconds<10 ? `0${seconds}`:seconds}`
+        }
+
+
+        function init(){
+            setInterval(getTime, 1000);
+        }
+
+        init(); 
+    </script>
+    <script>
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Watch창입니다.',
+            showConfirmButton: false,
+            timer: 1500
+        })
+    </script>
+</body>
+</html>
